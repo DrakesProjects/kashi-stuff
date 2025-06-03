@@ -1,0 +1,3 @@
+data-pull/get_historical_data.sh
+data-pull/websockets_tests.sh
+data-pull/.venv

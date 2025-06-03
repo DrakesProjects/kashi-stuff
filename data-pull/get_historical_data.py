@@ -13,7 +13,7 @@ from tqdm import tqdm
 def main():
     # Parse directory for dataset
     parser = argparse.ArgumentParser()
-    parser.add_argument("my_dir", help="directory to store dataset")
+    parser.add_argument("my_dir", required=True, help="directory to store dataset")
     args = parser.parse_args()
     my_path = Path(args.my_dir)
 
