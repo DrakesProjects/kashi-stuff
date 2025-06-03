@@ -50,7 +50,7 @@ async def run_ws(api_key: str):
 async def main():
     # Parse file location of API key
     parser = argparse.ArgumentParser()
-    parser.add_argument("key_loc", required=True, help="Path to a file containing your API key")
+    parser.add_argument("key_loc", help="Path to a file containing your API key")
     args = parser.parse_args()
     api_key = get_api_key(args.key_loc)
     await run_ws(api_key)
