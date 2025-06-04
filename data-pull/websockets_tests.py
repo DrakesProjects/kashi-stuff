@@ -1,7 +1,7 @@
 import argparse
 import asyncio
 import json
-import websockets
+from websockets.asyncio.client import connect
 import sys
 
 API_URL = "wss://api.elections.kalshi.com/trade-api/ws/v2"
@@ -25,7 +25,7 @@ async def run_ws(api_key: str):
     """Connect to the kalshi PROD WebSocket endpoint using api_key"""
     headers = [("Authorization", f"Bearer {api_key}")]
     try:
-        async with websockets.connect(API_URL, extra_headers=headers) as ws:
+        async with connect(API_URL, additional_headers=headers) as ws:
             print("Connected to Kalshi PROD WebSocket")
             # Subscribe to channels here: #######################
 
@@ -42,18 +42,18 @@ async def run_ws(api_key: str):
                     except: # Other
                         print("Received non-JSON payload:", raw_msg)
 
-    except websockets.InvalidStatusCode as e:
-        print(f"Failed to connect: HTTP status {e.status_code}")
     except Exception as e:
         print("WebSocket connection error:", e)
 
 async def main():
-    # Parse file location of API key
+    # Parse file location of private key and file location of access key
     parser = argparse.ArgumentParser()
     parser.add_argument("key_loc", help="Path to a file containing your API key")
     args = parser.parse_args()
-    api_key = get_api_key(args.key_loc)
+    api_key = get_api_key(args.key_loc).replace(" ", "")
+    print(f"'{api_key}'")
     await run_ws(api_key)
+    
 
 if __name__ == "__main__":
     asyncio.run(main())
