@@ -2,9 +2,9 @@
 # 05/29/2025
 # github.com/drakesprojects
 
+import os
 import sys
 from pathlib import Path
-import argparse
 import requests
 import pandas as pd
 from datetime import date, timedelta
@@ -12,11 +12,7 @@ from tqdm import tqdm
 
 def main():
     # Parse directory for dataset
-    parser = argparse.ArgumentParser()
-    parser.add_argument("my_dir", help="directory to store dataset")
-    args = parser.parse_args()
-    my_path = Path(args.my_dir)
-
+    my_path = Path(os.environ["DATASET_DIRECTORY"])
     
     # ensure directory exists
     if not my_path.is_dir():

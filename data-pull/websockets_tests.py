@@ -46,12 +46,9 @@ async def run_ws(api_key: str):
         print("WebSocket connection error:", e)
 
 async def main():
-    # Parse file location of private key and file location of access key
-    parser = argparse.ArgumentParser()
-    parser.add_argument("key_loc", help="Path to a file containing your API key")
-    args = parser.parse_args()
-    api_key = get_api_key(args.key_loc).replace(" ", "")
-    print(f"'{api_key}'")
+    # Parse file location of private key and file location of access key from environment variables
+    private_key_path = os.environ["PRIVATE_KEY_PATH"]
+    access_key_path = os.environ["ACCESS_KEY_PATH"]
     await run_ws(api_key)
     
 
