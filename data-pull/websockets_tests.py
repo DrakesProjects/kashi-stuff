@@ -1,10 +1,17 @@
+import os
+import sys
 import argparse
 import asyncio
 import json
+from typing import Tuple
 from websockets.asyncio.client import connect
-import sys
+from keyloader import make_headers
 
-API_URL = "wss://api.elections.kalshi.com/trade-api/ws/v2"
+API_PATH = "/trade-api/ws/v2"
+
+# URL IS WHERE WE SPECIFY DEMO OR PROD MODE with 'demo-api' or just 'api'
+API_URL = "wss://api.elections.kalshi.com" + API_PATH
+
 
 def get_api_key(key_loc: str) -> str:
     """Read the api key file location, find the api key, and return it"""
@@ -21,9 +28,9 @@ def get_api_key(key_loc: str) -> str:
         print(f"Error reading API key from \'{key_loc}\'", file=sys.stderr)
         sys.exit(1)
 
-async def run_ws(api_key: str):
+
+async def run_ws(headers: Tuple[str, str, str]):
     """Connect to the kalshi PROD WebSocket endpoint using api_key"""
-    headers = [("Authorization", f"Bearer {api_key}")]
     try:
         async with connect(API_URL, additional_headers=headers) as ws:
             print("Connected to Kalshi PROD WebSocket")
@@ -45,11 +52,16 @@ async def run_ws(api_key: str):
     except Exception as e:
         print("WebSocket connection error:", e)
 
+
 async def main():
     # Parse file location of private key and file location of access key from environment variables
     private_key_path = os.environ["PRIVATE_KEY_PATH"]
     access_key_path = os.environ["ACCESS_KEY_PATH"]
-    await run_ws(api_key)
+    headers = make_headers(access_key_path,
+                           private_key_path,
+                           'GET',
+                           API_PATH)
+    await run_ws(headers)
     
 
 if __name__ == "__main__":

@@ -24,7 +24,7 @@ def load_private_key_from_file(file_path: str) -> rsa.RSAPrivateKey:
 
 def load_access_key_from_file(file_path: str) -> str:
     try:
-        with open(kalshi_access_key_location, "r", encoding="utf-8") as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             kalshi_access_key = f.read().strip()
             if not kalshi_access_key:
                 raise ValueError("Access key file is empty")
@@ -55,10 +55,11 @@ def sign_pss_text(private_key: rsa.RSAPrivateKey, text: str) -> str:
     except InvalidSignature as e:
         raise ValueError("RSA sign PSS failed") from e
 
-def make_headers(access_key_file_location: str, 
-                 private_key_file_location: str, 
-                 method: str,
-                 path: str)
+# methods: GET: retrieve data, POST: send an order, DELETE: remove an order, maybe more, but idk
+def make_headers(access_key_file_location: str,     # file location of the access key
+                 private_key_file_location: str,    # file location of the private key
+                 method: str,                       # info above
+                 path: str):                        # 
     # get the current time
     current_time = datetime.datetime.now()
 
@@ -80,7 +81,7 @@ def make_headers(access_key_file_location: str,
     sig = sign_pss_text(private_key, msg_string)
 
     return {
-            'KALSHI-ACCESS-KEY': kalshi_access_key,
+            'KALSHI-ACCESS-KEY': access_key,
             'KALSHI-ACCESS-SIGNATURE': sig,
             'KALSHI-ACCESS-TIMESTAMP': timestampt_str
         }
