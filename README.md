@@ -17,4 +17,4 @@ Any program not listed below is under development.
    + Current size of dataset is around half a gigabyte as of 2025-05-30
 
  - <ins>websockets_tests.py</ins> (API Key required)
-   + Make contact with Kalshi's WebSockets api for real time exchange data
+   + Make contact with Kalshi's WebSockets api for real-time exchange data
