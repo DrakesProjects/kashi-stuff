@@ -1,3 +1,4 @@
+import sys
 import datetime
 import base64
 from cryptography.hazmat.primitives import serialization, hashes
@@ -16,10 +17,10 @@ def load_private_key_from_file(file_path: str) -> rsa.RSAPrivateKey:
             )
             return private_key
     except FileNotFoundError:
-        print(f"Error: cannot find file \'{key_loc}\'", file=sys.stderr)
+        print(f"Error: cannot find file \'{file_path}\'", file=sys.stderr)
         sys.exit(1)
     except Exception as e:
-        print(f"Error reading API key from \'{key_loc}\'", file=sys.stderr)
+        print(f"Error reading API key from \'{file_path}\'", file=sys.stderr)
         sys.exit(1)
 
 def load_access_key_from_file(file_path: str) -> str:
@@ -30,10 +31,10 @@ def load_access_key_from_file(file_path: str) -> str:
                 raise ValueError("Access key file is empty")
             return kalshi_access_key
     except FileNotFoundError:
-        print(f"Error: cannot find file \'{key_loc}\'", file=sys.stderr)
+        print(f"Error: cannot find file \'{file_path}\'", file=sys.stderr)
         sys.exit(1)
     except Exception as e:
-        print(f"Error reading Access key from \'{key_loc}\'", file=sys.stderr)
+        print(f"Error reading Access key from \'{file_path}\'", file=sys.stderr)
         sys.exit(1) 
 
 def sign_pss_text(private_key: rsa.RSAPrivateKey, text: str) -> str:

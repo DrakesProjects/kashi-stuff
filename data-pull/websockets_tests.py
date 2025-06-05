@@ -35,7 +35,12 @@ async def run_ws(headers: Tuple[str, str, str]):
         async with connect(API_URL, additional_headers=headers) as ws:
             print("Connected to Kalshi PROD WebSocket")
             # Subscribe to channels here: #######################
-
+            await ws.send(json.dumps({"id": 1,
+                                      "cmd": "subscribe",
+                                      "params": {
+                                          "channels": ["orderbook_delta"],
+                                          "market_tickers": ["KXBTCD-25JUN0500-T104999.99"]}
+                                      }))
             #####################################################
             async for raw_msg in ws:
                 if isinstance(raw_msg, bytes):
