@@ -1,7 +1,7 @@
 # Kalshi stuff
 A repository of some tools I'm currently making to interact with the Kalshi API.
 
-***DISCALIMER:*** Make sure you understand any code you run from this database...
+***DISCALIMER:*** Make sure you understand any code you run from this repository...
 
 Any program not listed below is under development.
 
