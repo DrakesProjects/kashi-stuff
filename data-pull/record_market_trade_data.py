@@ -1,5 +1,8 @@
+# 2025-06-05
+# The program is going to be for continuously storing data
+# periodically resetting markets, such as the bitcoin pricing
+# or weather markets.
 from os import environ
-import sys
 import argparse
 import asyncio
 import json
@@ -12,19 +15,17 @@ API_PATH = "/trade-api/ws/v2"
 # URL IS WHERE WE SPECIFY DEMO OR PROD MODE with 'demo-api' or just 'api'
 API_URL = "wss://api.elections.kalshi.com" + API_PATH
 
-
 async def run_ws(headers: Tuple[str, str, str]):
     """Connect to the kalshi PROD WebSocket endpoint using api_key"""
     try:
         async with connect(API_URL, additional_headers=headers) as ws:
-            print("Connected to Kalshi PROD WebSocket")
+            print("Connected to Kalshi WebSocket")
             # Subscribe to channels here: #######################
             await ws.send(json.dumps({"id": 1,
                                       "cmd": "subscribe",
                                       "params": {
                                           "channels": ["orderbook_delta"],
-                                          "market_tickers": ["KXBTCD-25JUN0500-T104999.99"]
-                                          }
+                                          "market_tickers": ["KXBTCD-25JUN0500-T104999.99"]}
                                       }))
             #####################################################
             async for raw_msg in ws:
@@ -51,7 +52,9 @@ async def main():
                            'GET',
                            API_PATH)
     await run_ws(headers)
-    
+
 
 if __name__ == "__main__":
     asyncio.run(main())
+
+
